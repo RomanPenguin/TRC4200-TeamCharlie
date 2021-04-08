@@ -1,6 +1,6 @@
 # app.py
 
-
+import requests, json
 from flask import Flask, render_template, request
 from flask_assets import Bundle, Environment
 
@@ -28,14 +28,14 @@ if __name__ == "__main__":
 
 @app.route("/search", methods=["POST"])
 def search_todo():
-    search_term = request.form.get("search")
-
+    search_term = requests.get("https://api.data.gov.sg/v1/transport/carpark-availability?date_time=2020-01-15T10%3A10%3A10")
+    parking_data = search_term.json()
     if not len(search_term):
         return render_template("todo.html", todos=[])
 
     res_todos = []
     for todo in todos:
-        if search_term in todo["title"]:
+        if search_term in todo["carpark_number"]:
             res_todos.append(todo)
 
     return render_template("todo.html", todos=res_todos)
