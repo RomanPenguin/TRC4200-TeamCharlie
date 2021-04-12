@@ -40,3 +40,8 @@ def search_todo():
             res_todos.append(parking_lot)
 
     return render_template("todo.html", todos=res_todos)
+
+
+@app.route("/chart")
+def chartpage():
+    return render_template("chart.html")
