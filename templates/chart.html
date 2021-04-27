@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<div>
-  <canvas id="myChart"></canvas>
+<!-- templates/chart.html -->
+
+<div class="container mx-auto ">
+    <canvas id="myChart" width="400" height="300"></canvas>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -32,13 +27,27 @@
     const config = {
     type: 'line',
     data,
-    options: {}
+    options: {
+        maintainAspectRatio: false,
+        responsive: true,
+        scales: {
+            'time-axis': {
+                type: 'linear',
+                position: 'left'
+            },
+
+            xAxes: [{
+                type: 'time',
+                time: {
+                    unit: 'hour'
+                }
+            }]
+        }
+    }
     };
   var myChart = new Chart(
     document.getElementById('myChart'),
     config
+
   );
 </script>
-
-</body>
-</html>
