@@ -72,5 +72,5 @@ def chartpage():
             parking_data_dict[i]["timestamp"] = row["timestamp"]
             numbers_list.append(int(i))
             i = i+1
-
+        print(parking_available)
     return render_template("chart.html", parking_data=parking_available, numbers_list=numbers_list)
