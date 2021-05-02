@@ -1,5 +1,6 @@
 <!-- templates/chart.html -->
-
+{% extends 'base.html' %}
+{% block content %}
 <div class="container mx-auto ">
     <canvas id="myChart" width="400" height="300"></canvas>
 </div>
@@ -18,7 +19,7 @@
   const data = {
       labels: {{ numbers_list }},
       datasets: [{
-        label: 'My First dataset',
+        label: '{{lot_number}}',
         backgroundColor: 'rgb(255, 99, 132)',
         borderColor: 'rgb(255, 99, 132)',
         data: {{ parking_data }},
@@ -51,3 +52,4 @@
 
   );
 </script>
+{% endblock content %}
