@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Map</title>
+    <link rel="stylesheet" type="text/css" href="./map.css" />
+    <script src="./map.js"></script>
+  </head>
+  <body>
+    <input
+      id="pac-input"
+      class="controls"
+      type="text"
+      placeholder="Search Location"
+    />
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAVFNUv4-jYTX2EAPig8N3e5ukhOcziSs
+            &callback=initAutocomplete&libraries=places&v=weekly"
+      async
+    ></script>
+  </body>
+</html>
