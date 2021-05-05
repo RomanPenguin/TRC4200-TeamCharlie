@@ -4,13 +4,13 @@
   {% for todo in todos %}
     <tr class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
       <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-          <button onclick="location.href='{{ url_for('chartpage',my_var=todo.carpark_number)}}'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            {{todo.carpark_number}}
+          <button onclick="location.href='{{ url_for('chartpage',my_var=todo[0])}}'" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            {{todo[0]}}
 </button>
       </td>
-      <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">{{todo.carpark_info[0].lots_available}}</td>
-      <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">{{todo.carpark_info[0].total_lots}}</td>
-      <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">{{todo.carpark_info[0].lot_type}}</td>
+      <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">{{todo[2][0]}}</td>
+      <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">{{ todo[1] }}</td>
+      <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">3</td>
 
 
     </tr>

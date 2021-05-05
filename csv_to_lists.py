@@ -1,7 +1,7 @@
 import csv
 cp = []
 all=[]
-with open('carpark3.csv') as csvfile:
+with open('carpark.csv') as csvfile:
     rows = csv.reader(csvfile)
     res = list(zip(*rows))
 r = len(res)
@@ -16,4 +16,4 @@ for i in range((r-2)-1):
         all.append(cp)
 
 #print(res[3][0:5])
-print(all[7])
+print(all[7][0])
