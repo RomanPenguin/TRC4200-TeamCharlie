@@ -6,6 +6,7 @@ from flask_assets import Bundle, Environment
 import csv
 from todo import todos
 import urllib
+import os
 
 app = Flask(__name__)
 
@@ -141,14 +142,15 @@ def mappage():
 @app.route("/map_search", methods=["POST"])
 def search_place():
     # load API key
-    with open('apikey.txt') as f:
+    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    with open(os.path.join(__location__, 'apikey.txt'), "r") as f:
         api_key = f.readline()
         f.close
 
     # get search term entered
     search_term = request.form.get("search_input")
     # convert to url format
-    search_term = urllib.quote(search_term)
+    search_term = urllib.parse.quote(search_term)
 
     place = []
 
@@ -156,6 +158,7 @@ def search_place():
     url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?"
     raw_data = requests.get(url + "input=" + search_term + "&inputtype=textquery" + "&fields=formatted_address,name,geometry" + "&key=" + api_key)
     # get first candidate
-    place = raw_data.json()["candidates"][0]
+    if raw_data.json().get("candidates"):
+        place = raw_data.json()["candidates"][0]
 
     return render_template("place.html", place=place)
