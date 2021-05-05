@@ -5,6 +5,7 @@ from flask import Flask, render_template, request
 from flask_assets import Bundle, Environment
 import csv
 from todo import todos
+import urllib
 
 app = Flask(__name__)
 
@@ -145,16 +146,16 @@ def search_place():
         f.close
 
     # get search term entered
-    search_term = request.form.get("place-input")
+    search_term = request.form.get("search_input")
+    # convert to url format
+    search_term = urllib.quote(search_term)
 
-    # testing vals
-    origin = "chicago" # will be replaced by search term
-    destinations = "milwaukee" # will be replaced by nearest carparks
+    place = []
 
     # call API & get data
-    url = "https://maps.googleapis.com/maps/api/distancematrix/json?"
-    raw_data = requests.get(url + "origins=" + origin + "&destinations=" + destinations + "&key=" + api_key)
-    # format data, in seconds
-    distance_data = raw_data.json()["rows"][0]["elements"][0]["duration"]["value"] # will be expanded
+    url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?"
+    raw_data = requests.get(url + "input=" + search_term + "&inputtype=textquery" + "&fields=formatted_address,name,geometry" + "&key=" + api_key)
+    # get first candidate
+    place = raw_data.json()["candidates"][0]
 
-    return render_template("distances.html", distance_data=distance_data)
+    return render_template("place.html", place=place)

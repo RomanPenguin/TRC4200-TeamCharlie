@@ -5,11 +5,11 @@
 <div class="w-small w-2/3 mx-auto py-10 text-gray-600">
     <input
         type="text"
-        name="place-input"
-        hx-post="/map"
+        name="search_input"
+        hx-post="/map_search"
         hx-trigger="keyup changed delay:250ms"
         hx-indicator=".htmx-indicator"
-        hx-target="#map-results"
+        hx-target="#place-results"
         placeholder="Search Location"
         class="bg-white h-10 px-5 pr-10 rounded-full text-2xl focus:outline-none"
     >
@@ -18,11 +18,14 @@
 <table class="border-collapse w-small w-2/3 mx-auto">
   <thead>
     <tr>
-      <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">Distance</th>
+        <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">Formatted Address</th>
+        <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">Name</th>
+        <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">Latitude</th>
+        <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">Longitude</th>
     </tr>
   </thead>
-  <tbody id="map-results">
-    {% include 'distances.html' %}
+  <tbody id="place-results">
+    {% include 'place.html' %}
 
   </tbody>
 
