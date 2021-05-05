@@ -1,24 +1,31 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Map</title>
-    <link rel="stylesheet" type="text/css" href="./map.css" />
-    <script src="./map.js"></script>
-  </head>
-  <body>
-    <input
-      id="pac-input"
-      class="controls"
-      type="text"
-      placeholder="Search Location"
-    />
-    <div id="map"></div>
+<!-- templates/map.html -->
+{% extends 'base.html' %}
+{% block content %}
 
-    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAVFNUv4-jYTX2EAPig8N3e5ukhOcziSs
-            &callback=initAutocomplete&libraries=places&v=weekly"
-      async
-    ></script>
-  </body>
-</html>
+<div class="w-small w-2/3 mx-auto py-10 text-gray-600">
+    <input
+        type="text"
+        name="place-input"
+        hx-post="/map"
+        hx-trigger="keyup changed delay:250ms"
+        hx-indicator=".htmx-indicator"
+        hx-target="#map-results"
+        placeholder="Search Location"
+        class="bg-white h-10 px-5 pr-10 rounded-full text-2xl focus:outline-none"
+    >
+</div>
+
+<table class="border-collapse w-small w-2/3 mx-auto">
+  <thead>
+    <tr>
+      <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">Distance</th>
+    </tr>
+  </thead>
+  <tbody id="map-results">
+    {% include 'distances.html' %}
+
+  </tbody>
+
+</table>
+
+{% endblock content %}

@@ -73,4 +73,32 @@ def chartpage():
             numbers_list.append(int(i))
             i = i+1
         print(parking_available)
-    return render_template("chart.html", parking_data=parking_available, numbers_list=numbers_list, lot_number = lot_number)
+    return render_template("chart.html", parking_data=parking_available, numbers_list=numbers_list)
+
+
+@app.route("/map")
+def mappage():
+    return render_template("map.html")
+
+
+@app.route("/map_search", methods=["POST"])
+def search_place():
+    # load API key
+    with open('apikey.txt') as f:
+        api_key = f.readline()
+        f.close
+
+    # get search term entered
+    search_term = request.form.get("place-input")
+
+    # testing vals
+    origin = "chicago" # will be replaced by search term
+    destinations = "milwaukee" # will be replaced by nearest carparks
+
+    # call API & get data
+    url = "https://maps.googleapis.com/maps/api/distancematrix/json?"
+    raw_data = requests.get(url + "origins=" + origin + "&destinations=" + destinations + "&key=" + api_key)
+    # format data, in seconds
+    distance_data = raw_data.json()["rows"][0]["elements"][0]["duration"]["value"] # will be expanded
+
+    return render_template("distances.html", distance_data=distance_data)
