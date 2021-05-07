@@ -1,55 +1,65 @@
 <!-- templates/chart.html -->
 {% extends 'base.html' %}
 {% block content %}
-<div class="container mx-auto ">
-    <canvas id="myChart" width="400" height="300"></canvas>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <div class="container mx-auto px-10 pt-10 pb-5 ">
+        <button onclick="location.href='{{ url_for('homepage') }}'"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-10 rounded">
+            back
+        </button>
+    </div>
 
-<script>
-  // === include 'setup' then 'config' above ===
-    {#const labels = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-    ];#}
-  const data = {
-      labels: {{ numbers_list }},
-      datasets: [{
-        label: '{{lot_number}}',
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgb(255, 99, 132)',
-        data: {{ parking_data }},
-      }]
-    };
-    const config = {
-    type: 'line',
-    data,
-    options: {
-        maintainAspectRatio: false,
-        responsive: true,
-        scales: {
-            'time-axis': {
-                type: 'linear',
-                position: 'left'
-            },
+    <div class="container mx-auto ">
 
-            xAxes: [{
-                type: 'time',
-                time: {
-                    unit: 'hour'
-                }
+        <canvas id="myChart" width="400" height="300"></canvas>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+
+        const data = {
+            labels: {{ numbers_list }},
+            datasets: [{
+                label: '{{lot_number}}',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: {{ parking_data }},
             }]
-        }
-    }
-    };
-  var myChart = new Chart(
-    document.getElementById('myChart'),
-    config
+        };
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                scales: {
+                    'time-axis': {
+                        type: 'linear',
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: "lots available"
+                        }
 
-  );
-</script>
+                    },
+
+                    xAxes: [{
+                        type: 'time',
+                        time: {
+                            unit: 'hour'
+                        },
+                        title:{
+                            display: true,
+                            text: "time"
+                        }
+                    }]
+                }
+            }
+        };
+        var myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+    </script>
+
 {% endblock content %}

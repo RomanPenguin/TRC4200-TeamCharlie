@@ -7,6 +7,7 @@ import csv
 from todo import todos
 import urllib
 import os
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -69,6 +70,8 @@ def search_todo():
         #     parking_lot["lots_available"]=res[key]
         #     print(parking_lot["lots_available"])
         #     res_todos.append(parking_lot)
+
+        # search using csv file
         cp = []
         all_carpark = []
         with open('carpark.csv') as csvfile:
@@ -88,10 +91,6 @@ def search_todo():
             if carpark[0]==search_term:
                 res_todos.append(carpark)
                 print(carpark)
-
-
-
-
 
     return render_template("todo.html", todos=res_todos)
 
@@ -120,18 +119,24 @@ def chartpage():
             cp = [cpnum, lots, avail, time]
             all_carpark.append(cp)
 
+    # parse data to display on chart
     for carpark in all_carpark:
         if carpark[0] == lot_number:
             for available in carpark[2]:
                 parking_available.append(int(available))
 
             numbers_list = list(range(0, len(carpark[2])))
+            numbers_list.reverse()
+
+            #time conversion
+            time_list = datetime.strptime('19/04/2021 10:59', '%d/%m/%Y %H:%M')
+            print(time_list.strftime("%H%M %d/%m/%Y"))
             print(len(parking_available))
             print(len(numbers_list))
             break
     print(parking_available)
 
-    return render_template("chart.html", parking_data=parking_available, numbers_list=numbers_list)
+    return render_template("chart.html", parking_data=parking_available, numbers_list=numbers_list, lot_number = lot_number)
 
 
 @app.route("/map")
