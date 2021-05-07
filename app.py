@@ -95,6 +95,11 @@ def search_todo():
     return render_template("todo.html", todos=res_todos)
 
 
+@app.route("/carparks", methods=["POST", "GET"])
+def carpark_search():
+    return render_template("carparksearch.html")
+
+
 @app.route("/chart", methods=["GET"])
 def chartpage():
 
@@ -128,11 +133,9 @@ def chartpage():
             numbers_list = list(range(0, len(carpark[2])))
             numbers_list.reverse()
 
-            #time conversion
+            # time conversion
             time_list = datetime.strptime('19/04/2021 10:59', '%d/%m/%Y %H:%M')
             print(time_list.strftime("%H%M %d/%m/%Y"))
-            print(len(parking_available))
-            print(len(numbers_list))
             break
     print(parking_available)
 

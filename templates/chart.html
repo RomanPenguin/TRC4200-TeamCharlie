@@ -2,17 +2,36 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="container mx-auto px-10 pt-10 pb-5 ">
-        <button onclick="location.href='{{ url_for('homepage') }}'"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-10 rounded">
-            back
+        <button onclick="goBack()"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
+            <script>
+                function goBack() {
+                    window.history.back();
+                }
+            </script>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
         </button>
-    </div>
-
-    <div class="container mx-auto ">
-
-        <canvas id="myChart" width="400" height="300"></canvas>
 
     </div>
+    <div class="container mx-auto bg-yellow-100 rounded-lg shadow-xl hover:bg-yellow-200">
+        <div class="container mx-auto flex justify-center">
+            <div>
+                <p class="-top-0 p-3 font-bold text=center text-5xl text-green-700">
+                    {{ lot_number }} Available spaces
+                </p>
+            </div>
+        </div>
+
+        <div>
+
+            <canvas id="myChart" width="400" height="300"></canvas>
+
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
@@ -21,8 +40,8 @@
             labels: {{ numbers_list }},
             datasets: [{
                 label: '{{lot_number}}',
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgb(4, 120, 87)',
+                borderColor: 'rgb(4, 120, 87)',
                 data: {{ parking_data }},
             }]
         };
@@ -32,6 +51,11 @@
             options: {
                 maintainAspectRatio: false,
                 responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
                 scales: {
                     'time-axis': {
                         type: 'linear',
@@ -48,7 +72,7 @@
                         time: {
                             unit: 'hour'
                         },
-                        title:{
+                        title: {
                             display: true,
                             text: "time"
                         }
