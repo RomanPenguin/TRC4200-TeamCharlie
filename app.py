@@ -8,6 +8,8 @@ from todo import todos
 import urllib
 import os
 from datetime import datetime
+import pandas as pd
+import numpy as np
 
 app = Flask(__name__)
 
@@ -168,5 +170,28 @@ def search_place():
     # get first candidate
     if raw_data.json().get("candidates"):
         place = raw_data.json()["candidates"][0]
+
+
+    # read carpark list file
+    cf = pd.read_csv(os.path.join(__location__, 'hdb-carpark-information.csv'),
+                     usecols=['car_park_no', 'x_coord', 'y_coord'])
+    # convert x & y coords' columns to float
+    cf['x_coord'] = cf['x_coord'].astype(float)
+    cf['y_coord'] = cf['y_coord'].astype(float)
+
+    # convert place x & y coords to arrays, then to panda dataframes
+    place_x = np.full((2158, 1), place['geometry']['location']['lng'], dtype=float)
+    place_y = np.full((2158, 1), place['geometry']['location']['lat'], dtype=float)
+    x = pd.DataFrame(place_x, columns=['place_x'])
+    y = pd.DataFrame(place_y, columns=['place_y'])
+    x = x['place_x'].astype(float)
+    y = y['place_y'].astype(float)
+
+    # find differences in x & y coords
+    x_diff = cf['x_coord'].subtract(x)
+    y_diff = cf['y_coord'].subtract(y)
+
+    # use differences to find direct distances
+
 
     return render_template("place.html", place=place)
