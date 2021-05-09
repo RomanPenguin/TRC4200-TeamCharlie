@@ -188,10 +188,16 @@ def search_place():
     y = y['place_y'].astype(float)
 
     # find differences in x & y coords
-    x_diff = cf['x_coord'].subtract(x)
-    y_diff = cf['y_coord'].subtract(y)
+    x_diff = cf['x_coord'].sub(x)
+    y_diff = cf['y_coord'].sub(y)
 
     # use differences to find direct distances
+    x_diff = x_diff.pow(2)
+    y_diff = y_diff.pow(2)
+    dists = x_diff.add(y_diff)
+    dists = dists.pow(0.5)
 
+    # find carparks with shortest distances
+    shortest = dists.idxmin()
 
-    return render_template("place.html", place=place)
+    return render_template("place.html", place=place, shortest=shortest)
