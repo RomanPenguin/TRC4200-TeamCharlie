@@ -23,6 +23,30 @@ assets.register("js", js)  # new
 css.build()
 js.build()  # new
 
+################## map page set up ##################
+
+# load API key
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+with open(os.path.join(__location__, 'apikey.txt'), "r") as f:
+    api_key = f.readline()
+    f.close
+
+# read carpark list file
+cf = pd.read_csv(os.path.join(__location__, 'hdb-carpark-information.csv'),
+                 usecols=['car_park_no', 'x_coord', 'y_coord'])
+# convert x & y coords' columns to float
+cf['x_coord'] = cf['x_coord'].astype(float)
+cf['y_coord'] = cf['y_coord'].astype(float)
+
+# convert geo coords from SVY21 to latitude longitude
+coord_change = SV.SVY21()
+lat_lon = [None] * len(cf['x_coord'])
+for i, r in cf.iterrows():
+    lat_lon[i] = coord_change.computeLatLon(r['y_coord'], r['x_coord'])
+# convert to panda dataframe
+cps_coords = pd.DataFrame(lat_lon, columns=['y', 'x'])
+
+#######################################################
 
 @app.route("/")
 def homepage():
@@ -152,12 +176,6 @@ def mappage():
 
 @app.route("/map_search", methods=["POST"])
 def search_place():
-    # load API key
-    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-    with open(os.path.join(__location__, 'apikey.txt'), "r") as f:
-        api_key = f.readline()
-        f.close
-
     # get search term entered
     search_term = request.form.get("search_input") + " singapore"
     # convert to url format
@@ -172,22 +190,6 @@ def search_place():
     if raw_data.json().get("candidates"):
         place = raw_data.json()["candidates"][0]
 
-
-    # read carpark list file
-    cf = pd.read_csv(os.path.join(__location__, 'hdb-carpark-information.csv'),
-                     usecols=['car_park_no', 'x_coord', 'y_coord'])
-    # convert x & y coords' columns to float
-    cf['x_coord'] = cf['x_coord'].astype(float)
-    cf['y_coord'] = cf['y_coord'].astype(float)
-
-    # convert geo coords from SVY21 to latitude longitude
-    coord_change = SV.SVY21()
-    lat_lon = [None] * len(cf['x_coord'])
-    for i, r in cf.iterrows():
-        lat_lon[i] = coord_change.computeLatLon(r['y_coord'], r['x_coord'])
-    # convert to panda dataframe
-    cps_coords = pd.DataFrame(lat_lon, columns=['y', 'x'])
-
     # convert place x & y coords to array, then to panda dataframe
     place_np = np.full((2158, 2), [place['geometry']['location']['lat'], place['geometry']['location']['lng']],
                        dtype=float)
@@ -201,8 +203,11 @@ def search_place():
     dists = diff['y'].add(diff['x'])
     dists = dists.pow(0.5)
 
-    # find carparks with shortest distances
-    shortest_i = dists.idxmin()
-    shortest = cf['car_park_no'][shortest_i]
+    # find 3 carparks with shortest distances
+    shortest = [None] * 3
+    for idx in range(len(shortest)):
+        shortest_i = dists.idxmin()
+        shortest[idx] = cf['car_park_no'][shortest_i]
+        dists[shortest_i] += 1
 
     return render_template("place.html", place=place, shortest=shortest)
