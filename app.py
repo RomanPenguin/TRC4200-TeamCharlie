@@ -10,6 +10,7 @@ import os
 from datetime import datetime
 import pandas as pd
 import numpy as np
+import SVY21 as SV
 
 app = Flask(__name__)
 
@@ -158,7 +159,7 @@ def search_place():
         f.close
 
     # get search term entered
-    search_term = request.form.get("search_input")
+    search_term = request.form.get("search_input") + " singapore"
     # convert to url format
     search_term = urllib.parse.quote(search_term)
 
@@ -179,25 +180,29 @@ def search_place():
     cf['x_coord'] = cf['x_coord'].astype(float)
     cf['y_coord'] = cf['y_coord'].astype(float)
 
-    # convert place x & y coords to arrays, then to panda dataframes
-    place_x = np.full((2158, 1), place['geometry']['location']['lng'], dtype=float)
-    place_y = np.full((2158, 1), place['geometry']['location']['lat'], dtype=float)
-    x = pd.DataFrame(place_x, columns=['place_x'])
-    y = pd.DataFrame(place_y, columns=['place_y'])
-    x = x['place_x'].astype(float)
-    y = y['place_y'].astype(float)
+    # convert geo coords from SVY21 to latitude longitude
+    coord_change = SV.SVY21()
+    lat_lon = [None] * len(cf['x_coord'])
+    for i, r in cf.iterrows():
+        lat_lon[i] = coord_change.computeLatLon(r['y_coord'], r['x_coord'])
+    # convert to panda dataframe
+    cps_coords = pd.DataFrame(lat_lon, columns=['y', 'x'])
 
-    # find differences in x & y coords
-    x_diff = cf['x_coord'].sub(x)
-    y_diff = cf['y_coord'].sub(y)
+    # convert place x & y coords to array, then to panda dataframe
+    place_np = np.full((2158, 2), [place['geometry']['location']['lat'], place['geometry']['location']['lng']],
+                       dtype=float)
+    place_coords = pd.DataFrame(place_np, columns=['y', 'x'])
+    place_coords = place_coords.astype(float)
 
+    # find differences in coords
+    diff = cps_coords.sub(place_coords)
     # use differences to find direct distances
-    x_diff = x_diff.pow(2)
-    y_diff = y_diff.pow(2)
-    dists = x_diff.add(y_diff)
+    diff = diff.pow(2)
+    dists = diff['y'].add(diff['x'])
     dists = dists.pow(0.5)
 
     # find carparks with shortest distances
-    shortest = dists.idxmin()
+    shortest_i = dists.idxmin()
+    shortest = cf['car_park_no'][shortest_i]
 
     return render_template("place.html", place=place, shortest=shortest)
