@@ -11,6 +11,7 @@ from datetime import datetime
 import pandas as pd
 import numpy as np
 import SVY21 as SV
+from parseCSV import parseCSV
 
 app = Flask(__name__)
 
@@ -50,7 +51,7 @@ cps_coords = pd.DataFrame(lat_lon, columns=['y', 'x'])
 
 @app.route("/")
 def homepage():
-    return render_template("index.html")
+    return render_template("map.html")
 
 
 
@@ -82,21 +83,6 @@ def search_todo():
         csv_reader = csv.DictReader(csv_file)
         res_todos=[]
 
-
-        amendedsearch = "lot_available_"+search_term
-        # match the search term to the csv columns
-        # for row in csv_reader:
-        #     res = dict(filter(lambda item: search_term in item[0], row.items()))
-        #     print(str(res))
-        #     break
-        # for key in res:
-        #     parking_lot = {}
-        #
-        #     parking_lot["carpark_number"]=key
-        #     print(parking_lot["carpark_number"])
-        #     parking_lot["lots_available"]=res[key]
-        #     print(parking_lot["lots_available"])
-        #     res_todos.append(parking_lot)
 
         # search using csv file
         cp = []
@@ -132,41 +118,10 @@ def chartpage():
 
     # show chart based on the user's button click
     lot_number = request.args.get('my_var', None)
-    parking_available = []
-    numbers_list = []
-    #parse csv
-    cp = []
-    all_carpark = []
-    with open('carpark.csv') as csvfile:
-        rows = csv.reader(csvfile)
-        res = list(zip(*rows))
-    r = len(res)
-    for i in range((r - 2) - 1):
-        i = i + 2
-        if i % 2 == 0:
-            cpnum = res[i][0][14:]
-            lots = res[i + 1][2]
-            avail = (res[i][1:])
-            time = res[1][1:]
-            cp = [cpnum, lots, avail, time]
-            all_carpark.append(cp)
+    result = list(parseCSV(lot_number))
+    print(result)
 
-    # parse data to display on chart
-    for carpark in all_carpark:
-        if carpark[0] == lot_number:
-            for available in carpark[2]:
-                parking_available.append(int(available))
-
-            numbers_list = list(range(0, len(carpark[2])))
-            numbers_list.reverse()
-
-            # time conversion
-            time_list = datetime.strptime('19/04/2021 10:59', '%d/%m/%Y %H:%M')
-            print(time_list.strftime("%H%M %d/%m/%Y"))
-            break
-    print(parking_available)
-
-    return render_template("chart.html", parking_data=parking_available, numbers_list=numbers_list, lot_number = lot_number)
+    return render_template("chart.html", parking_data=result[0], numbers_list=result[1], lot_number=lot_number)
 
 
 @app.route("/map")
@@ -205,9 +160,11 @@ def search_place():
 
     # find 3 carparks with shortest distances
     shortest = [None] * 3
+    chart_data = []
     for idx in range(len(shortest)):
         shortest_i = dists.idxmin()
         shortest[idx] = cf['car_park_no'][shortest_i]
         dists[shortest_i] += 1
+        chart_data.append(list(parseCSV(shortest[idx])))
 
-    return render_template("place.html", place=place, shortest=shortest)
+    return render_template("place.html", place=place, shortest=shortest, chart_data=chart_data)
