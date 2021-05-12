@@ -13,13 +13,13 @@
         </td>
         <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
             <button onclick="location.href='{{ url_for('chartpage',my_var=shortest[1]) }}'"
-                    class="bg-purple-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    class="bg-purple-400 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
                 {{ shortest[1] }}
             </button>
         </td>
         <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
             <button onclick="location.href='{{ url_for('chartpage',my_var=shortest[2]) }}'"
-                    class="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                 {{ shortest[2] }}
             </button>
         </td>
@@ -57,8 +57,8 @@
                         },
                         {
                             label: '{{shortest[1]}}',
-                            backgroundColor: 'rgb(138,91,245)',
-                            borderColor: 'rgb(138,91,245)',
+                            backgroundColor: 'rgb(166,138,249)',
+                            borderColor: 'rgb(166,138,249)',
                             data: {{ chart_data[1][0] }},
                         },
                         {

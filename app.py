@@ -168,3 +168,7 @@ def search_place():
         chart_data.append(list(parseCSV(shortest[idx])))
 
     return render_template("place.html", place=place, shortest=shortest, chart_data=chart_data)
+
+@app.route("/contact")
+def contact():
+    return render_template("contact.html")

@@ -1,0 +1,50 @@
+<!-- templates/chart.html -->
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container mx-auto px-10 pt-10 pb-5 ">
+        <button onclick="goBack()"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
+            <script>
+                function goBack() {
+                    window.history.back();
+                }
+            </script>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+        </button>
+
+    </div>
+
+<table class="border-collapse w-small w-2/3 mx-auto table-auto">
+  <thead>
+    <tr>
+        <th class="p-3 font-bold uppercase bg-green-400 text-gray-100 border border-gray-300 hidden lg:table-cell">Profile</th>
+        <th class="p-3 font-bold uppercase bg-green-400 text-gray-100 border border-gray-300 hidden lg:table-cell">Name</th>
+        <th class="p-3 font-bold uppercase bg-green-400 text-gray-100 border border-gray-300 hidden lg:table-cell">Contact Info</th>
+
+    </tr>
+  </thead>
+  <tbody id="person_info">
+    <tr>
+        <td><img src="../static/headshot_e.jpeg" width="162"></td>
+        <td class="text-center">Eli Baker</td>
+        <td class="text-center">eobak1@student.monash.edu</td>
+    </tr>
+      <tr>
+        <td><img src="../static/headshot_k.jpeg" width="162"></td>
+        <td class="text-center">Shukai Chen</td>
+        <td class="text-center">sche0033@student.monash.edu</td>
+
+    </tr>
+      <tr>
+        <td><img src="../static/headshot_m.jpeg" width="162"></td>
+        <td class="text-center">Mehrnaz Mirmoayedi</td>
+        <td class="text-center">smmir2@student.monash.edu</td>
+    </tr>
+  </tbody>
+
+</table>
+
+{% endblock content %}
