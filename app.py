@@ -124,11 +124,6 @@ def chartpage():
     return render_template("chart.html", parking_data=result[0], numbers_list=result[1], lot_number=lot_number)
 
 
-@app.route("/map")
-def mappage():
-    return render_template("map.html")
-
-
 @app.route("/map_search", methods=["POST"])
 def search_place():
     # get search term entered
