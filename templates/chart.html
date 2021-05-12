@@ -16,6 +16,24 @@
         </button>
 
     </div>
+    <div>
+        <div>
+            <table class="mx-auto">
+                <thead>
+                    <tr>
+        <th class="p-3 font-bold uppercase bg-green-400 text-gray-100 border border-gray-300 hidden lg:table-cell">Map</th>
+        <th class="p-3 font-bold uppercase bg-green-400 text-gray-100 border border-gray-300 hidden lg:table-cell">carpark info</th>
+
+    </tr>
+                </thead>
+                <tr><td rowspan="2">
+                    <!-- > insert map stuff here<-->
+                </td>
+                    <td>Carpark name: {{ lot_number }}</td></tr>
+                <tr><td>Current availability: {{ parking_data[0] }}</td></tr>
+
+            </table>
+
     <div class="container mx-auto bg-yellow-100 rounded-lg shadow-xl hover:bg-yellow-200">
         <div class="container mx-auto flex justify-center">
             <div>
