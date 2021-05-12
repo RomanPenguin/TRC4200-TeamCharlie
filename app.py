@@ -51,7 +51,9 @@ cps_coords = pd.DataFrame(lat_lon, columns=['y', 'x'])
 
 @app.route("/")
 def homepage():
-    return render_template("map.html")
+    map_src = api_key + "&q=singapore"
+
+    return render_template("map.html", map_src=map_src)
 
 
 
@@ -163,6 +165,16 @@ def search_place():
         chart_data.append(list(parseCSV(shortest[idx])))
 
     return render_template("place.html", place=place, shortest=shortest, chart_data=chart_data)
+
+
+@app.route("/embedmap", methods=["POST"])
+def search_embedmap():
+    # get search term entered
+    search_term = request.form.get("search_input") + " singapore"
+    map_src = api_key + "&q=" + search_term
+
+    return render_template("embedmap.html", map_src=map_src)
+
 
 @app.route("/contact")
 def contact():
