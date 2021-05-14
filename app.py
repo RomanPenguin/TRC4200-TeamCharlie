@@ -3,6 +3,7 @@
 import requests, json
 from flask import Flask, render_template, request
 from flask_assets import Bundle, Environment
+from flask_googlemaps import GoogleMaps, Map
 import csv
 from todo import todos
 import urllib
@@ -24,13 +25,14 @@ assets.register("js", js)  # new
 css.build()
 js.build()  # new
 
-################## map page set up ##################
+################## map & maps API set up ##################
 
 # load API key
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 with open(os.path.join(__location__, 'apikey.txt'), "r") as f:
     api_key = f.readline()
     f.close
+
 
 # read carpark list file
 cf = pd.read_csv(os.path.join(__location__, 'hdb-carpark-information.csv'),
@@ -47,13 +49,21 @@ for i, r in cf.iterrows():
 # convert to panda dataframe
 cps_coords = pd.DataFrame(lat_lon, columns=['y', 'x'])
 
+
+# initialize maps extension
+GoogleMaps(app, key=api_key)
+
 #######################################################
 
 @app.route("/")
 def homepage():
-    map_src = api_key + "&q=singapore"
-
-    return render_template("map.html", map_src=map_src)
+    mymap = Map(
+        identifier="mymap",
+        lat=37.4419,
+        lng=-122.1419,
+        markers=[(37.4419, -122.1419), (37.4300, -122.1400)]
+    )
+    return render_template("map.html", mymap=mymap)
 
 
 
@@ -167,13 +177,15 @@ def search_place():
     return render_template("place.html", place=place, shortest=shortest, chart_data=chart_data)
 
 
-@app.route("/embedmap", methods=["POST"])
-def search_embedmap():
-    # get search term entered
-    search_term = request.form.get("search_input") + " singapore"
-    map_src = api_key + "&q=" + search_term
-
-    return render_template("embedmap.html", map_src=map_src)
+@app.route("/embedmap", methods=["GET"])  # come back to this once map size is fixed
+def showmap():
+    mymap = Map(
+        identifier="mymap",
+        lat=37.4419,
+        lng=-122.1419,
+        markers=[(37.4419, -122.1419), (37.4300, -122.1400)]
+    )
+    return render_template('embedmap.html', mymap=mymap)
 
 
 @app.route("/contact")
