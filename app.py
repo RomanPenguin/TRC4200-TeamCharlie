@@ -122,7 +122,14 @@ def chartpage():
     result = list(parseCSV(lot_number))
     print(result)
 
-    return render_template("chart.html", parking_data=result[0], numbers_list=result[1], lot_number=lot_number)
+    # find latitude longitude to send to embedded map
+    cp_i = cf[cf['car_park_no'] == lot_number].index.values
+    lat = cps_coords['y'].values[cp_i]
+    lon = cps_coords['x'].values[cp_i]
+    map_src = api_key + "&q=" + str(lat) + "," + str(lon)
+
+    return render_template("chart.html", parking_data=result[0], numbers_list=result[1], lot_number=lot_number,
+                           map_src=map_src)
 
 
 @app.route("/map_search", methods=["POST"])

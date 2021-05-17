@@ -1,107 +1,118 @@
 <!-- templates/chart.html -->
 {% extends 'base.html' %}
 {% block content %}
-    <div class="container mx-auto px-10 pt-10 pb-5 ">
-        <button onclick="goBack()"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
-            <script>
-                function goBack() {
-                    window.history.back();
-                }
-            </script>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                 stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-            </svg>
-        </button>
 
-    </div>
-    <div>
-        <div>
-            <table class="mx-auto">
-                <thead>
-                    <tr>
-        <th class="p-3 font-bold uppercase bg-green-400 text-gray-100 border border-gray-300 hidden lg:table-cell">Map</th>
-        <th class="p-3 font-bold uppercase bg-green-400 text-gray-100 border border-gray-300 hidden lg:table-cell">carpark info</th>
-
-    </tr>
-                </thead>
-                <tr><td rowspan="2">
-                    <!-- > insert map stuff here<-->
-                </td>
-                    <td>Carpark name: {{ lot_number }}</td></tr>
-                <tr><td>Current availability: {{ parking_data[0] }}</td></tr>
-
-            </table>
-
-    <div class="container mx-auto bg-yellow-100 rounded-lg shadow-xl hover:bg-yellow-200">
-        <div class="container mx-auto flex justify-center">
-            <div>
-                <p class="-top-0 p-3 font-bold text=center text-5xl text-green-700">
-                    {{ lot_number }} Available spaces
-                </p>
-            </div>
-        </div>
-
-        <div>
-
-            <canvas id="myChart" width="400" height="300"></canvas>
-
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script>
-
-        const data = {
-            labels: {{ numbers_list }},
-            datasets: [{
-                label: '{{lot_number}}',
-                backgroundColor: 'rgb(4, 120, 87)',
-                borderColor: 'rgb(4, 120, 87)',
-                data: {{ parking_data }},
-            }]
-        };
-        const config = {
-            type: 'line',
-            data: data,
-            options: {
-                maintainAspectRatio: false,
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    'time-axis': {
-                        type: 'linear',
-                        position: 'left',
-                        title: {
-                            display: true,
-                            text: "lots available"
-                        }
-
-                    },
-
-                    xAxes: [{
-                        type: 'time',
-                        time: {
-                            unit: 'hour'
-                        },
-                        title: {
-                            display: true,
-                            text: "time"
-                        }
-                    }]
-                }
+<div class="container mx-auto px-10 pt-10 pb-5 ">
+    <button onclick="goBack()"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
+        <script>
+            function goBack() {
+                window.history.back();
             }
-        };
-        var myChart = new Chart(
-            document.getElementById('myChart'),
-            config
-        );
-    </script>
+        </script>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+             stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+    </button>
+</div>
+
+<div>
+    <div>
+        <table class="mx-auto">
+            <thead>
+                <tr>
+                    <th class="p-3 font-bold uppercase bg-green-400 text-gray-100 border border-gray-300 hidden lg:table-cell">Map</th>
+                    <th class="p-3 font-bold uppercase bg-green-400 text-gray-100 border border-gray-300 hidden lg:table-cell">carpark info</th>
+                </tr>
+            </thead>
+            <tr><td rowspan="2">
+                <!-- > insert map stuff here<-->
+                <div id="table_map" class="mx-auto" >
+                    <iframe
+                      width="900"
+                      height="370"
+                      style="border:0"
+                      loading="lazy"
+                      allowfullscreen
+                      src="https://www.google.com/maps/embed/v1/place?key={{map_src}}">
+                    </iframe>
+                </div>
+            </td>
+                <td>Carpark name: {{ lot_number }}</td></tr>
+            <tr><td>Current availability: {{ parking_data[0] }}</td></tr>
+
+        </table>
+</div>
+
+<div class="container mx-auto bg-yellow-100 rounded-lg shadow-xl hover:bg-yellow-200">
+    <div class="container mx-auto flex justify-center">
+        <div>
+            <p class="-top-0 p-3 font-bold text=center text-5xl text-green-700">
+                {{ lot_number }} Available spaces
+            </p>
+        </div>
+    </div>
+
+    <div>
+
+        <canvas id="myChart" width="400" height="300"></canvas>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    const data = {
+        labels: {{ numbers_list }},
+        datasets: [{
+            label: '{{lot_number}}',
+            backgroundColor: 'rgb(4, 120, 87)',
+            borderColor: 'rgb(4, 120, 87)',
+            data: {{ parking_data }},
+        }]
+    };
+    const config = {
+        type: 'line',
+        data: data,
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                'time-axis': {
+                    type: 'linear',
+                    position: 'left',
+                    title: {
+                        display: true,
+                        text: "lots available"
+                    }
+
+                },
+
+                xAxes: [{
+                    type: 'time',
+                    time: {
+                        unit: 'hour'
+                    },
+                    title: {
+                        display: true,
+                        text: "time"
+                    }
+                }]
+            }
+        }
+    };
+    var myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+    );
+</script>
 
 {% endblock content %}
