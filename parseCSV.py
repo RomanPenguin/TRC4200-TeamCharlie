@@ -7,6 +7,7 @@ def parseCSV(lot_number):
     parking_available = []
     numbers_list = []
     all_carpark = []
+    time_list=datetime.strptime('19/04/2021 10:59', '%d/%m/%Y %H:%M')
     with open('carpark.csv') as csvfile:
         rows = csv.reader(csvfile)
         res = list(zip(*rows))

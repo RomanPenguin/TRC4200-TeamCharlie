@@ -18,3 +18,5 @@ six==1.16.0
 urllib3==1.26.4
 webassets==2.0
 Werkzeug==1.0.1
+
+statsmodels~=0.12.2
