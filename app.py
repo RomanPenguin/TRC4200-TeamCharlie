@@ -57,13 +57,29 @@ GoogleMaps(app, key=api_key)
 
 @app.route("/")
 def homepage():
-    mymap = Map(
-        identifier="mymap",
+    base_map = Map(
+        identifier="base_map",
         lat=37.4419,
         lng=-122.1419,
-        markers=[(37.4419, -122.1419), (37.4300, -122.1400)]
+        markers=[
+            {
+                'lat': 37.4500,
+                'lng': -122.1350,
+                'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+            },
+            {
+                'lat': 37.4419,
+                'lng': -122.1419,
+                'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+            },
+            {
+                'lat': 37.4300,
+                'lng': -122.1400,
+                'label': "Z"
+            }
+        ]
     )
-    return render_template("map.html", mymap=mymap)
+    return render_template("map.html", base_map=base_map)
 
 
 
