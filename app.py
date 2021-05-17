@@ -3,7 +3,6 @@
 import requests, json
 from flask import Flask, render_template, request
 from flask_assets import Bundle, Environment
-from flask_googlemaps import GoogleMaps, Map
 import csv
 from todo import todos
 import urllib
@@ -25,7 +24,7 @@ assets.register("js", js)  # new
 css.build()
 js.build()  # new
 
-################## map & maps API set up ##################
+################## maps API set up ##################
 
 # load API key
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -49,37 +48,11 @@ for i, r in cf.iterrows():
 # convert to panda dataframe
 cps_coords = pd.DataFrame(lat_lon, columns=['y', 'x'])
 
-
-# initialize maps extension
-GoogleMaps(app, key=api_key)
-
 #######################################################
 
 @app.route("/")
 def homepage():
-    base_map = Map(
-        identifier="base_map",
-        lat=37.4419,
-        lng=-122.1419,
-        markers=[
-            {
-                'lat': 37.4500,
-                'lng': -122.1350,
-                'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
-            },
-            {
-                'lat': 37.4419,
-                'lng': -122.1419,
-                'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
-            },
-            {
-                'lat': 37.4300,
-                'lng': -122.1400,
-                'label': "Z"
-            }
-        ]
-    )
-    return render_template("map.html", base_map=base_map)
+    return render_template("map.html")
 
 
 
@@ -190,18 +163,9 @@ def search_place():
         dists[shortest_i] += 1
         chart_data.append(list(parseCSV(shortest[idx])))
 
-    return render_template("place.html", place=place, shortest=shortest, chart_data=chart_data)
+    map_src = api_key + "&q=" + search_term
 
-
-@app.route("/embedmap", methods=["GET"])  # come back to this once map size is fixed
-def showmap():
-    mymap = Map(
-        identifier="mymap",
-        lat=37.4419,
-        lng=-122.1419,
-        markers=[(37.4419, -122.1419), (37.4300, -122.1400)]
-    )
-    return render_template('embedmap.html', mymap=mymap)
+    return render_template("place.html", place=place, shortest=shortest, chart_data=chart_data, map_src=map_src)
 
 
 @app.route("/contact")
