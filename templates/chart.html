@@ -26,7 +26,7 @@
                     <th class="p-3 font-bold uppercase bg-green-400 text-gray-100 border border-gray-300 hidden lg:table-cell">carpark info</th>
                 </tr>
             </thead>
-            <tr><td rowspan="2">
+            <tr><td rowspan="3">
                 <!-- > insert map stuff here<-->
                 <div id="table_map" class="mx-auto" >
                     <iframe
@@ -40,9 +40,11 @@
                 </div>
             </td>
                 <td>Carpark name: {{ lot_number }}</td></tr>
+            <tr><td>Carpark address: {{ address }}</td></tr>
             <tr><td>Current availability: {{ parking_data[0] }}</td></tr>
 
         </table>
+    </div>
 </div>
 
 <div class="container mx-auto bg-yellow-100 rounded-lg shadow-xl hover:bg-yellow-200">

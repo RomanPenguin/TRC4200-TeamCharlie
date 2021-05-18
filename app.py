@@ -36,7 +36,7 @@ with open(os.path.join(__location__, 'apikey.txt'), "r") as f:
 
 # read carpark list file
 cf = pd.read_csv(os.path.join(__location__, 'hdb-carpark-information.csv'),
-                 usecols=['car_park_no', 'x_coord', 'y_coord'])
+                 usecols=['car_park_no', 'address', 'x_coord', 'y_coord'])
 # convert x & y coords' columns to float
 cf['x_coord'] = cf['x_coord'].astype(float)
 cf['y_coord'] = cf['y_coord'].astype(float)
@@ -131,10 +131,13 @@ def chartpage():
     cp_i = cf[cf['car_park_no'] == lot_number].index.values
     lat = cps_coords['y'].values[cp_i]
     lon = cps_coords['x'].values[cp_i]
-    map_src = api_key + "&q=" + str(lat) + "," + str(lon)
+    map_src = api_key + "&q=" + str(lat)[1:-1] + "," + str(lon)[1:-1]
+
+    # get carpark address
+    address = str(cf['address'].values[cp_i])[2:-2]
 
     return render_template("chart.html", parking_data=result[0], numbers_list=result[1], lot_number=lot_number,
-                           map_src=map_src)
+                           map_src=map_src, address=address)
 
 
 @app.route("/map_search", methods=["POST"])
