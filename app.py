@@ -126,7 +126,7 @@ def chartpage():
     cp_i = cf[cf['car_park_no'] == lot_number].index.values
     lat = cps_coords['y'].values[cp_i]
     lon = cps_coords['x'].values[cp_i]
-    map_src = api_key + "&q=" + str(lat) + "," + str(lon)
+    map_src = api_key + "&q=" + str(lat)[1:-1] + "," + str(lon)[1:-1]
 
     return render_template("chart.html", parking_data=result[0], numbers_list=result[1], lot_number=lot_number,
                            map_src=map_src)
