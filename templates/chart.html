@@ -39,15 +39,11 @@
                     </iframe>
                 </div>
             </td>
-                <td>Carpark name: {{ lot_number }}</td></tr>
-            <tr><td>Carpark address: {{ address }}</td></tr>
-            <tr><td>Current availability: {{ parking_data[0] }}</td></tr>
-
-        </table>
-    </div>
-</div>
-
-<div class="container mx-auto bg-yellow-100 rounded-lg shadow-xl hover:bg-yellow-200">
+                <td class="bg-yellow-400 hover:bg-yellow-600 p-2">Carpark name:<br><br> <p class="text-lg-center bg-yellow-100 p-1">{{ lot_number }}</p> </td></tr>
+            <tr><td class="bg-yellow-400 hover:bg-yellow-600 p-2">Carpark address:<br><br>  <p class="text-lg-center bg-yellow-100 p-1">{{ address }}</p></td></tr>
+            <tr><td class="bg-yellow-400 hover:bg-yellow-600 p-2">Current availability:<br><br>  <p class="text-lg-center bg-yellow-100 p-1">{{ parking_data[0] }}</p></td></tr>
+            <tr><td colspan="2">
+                <div class="container mx-auto bg-yellow-100 rounded-lg shadow-xl hover:bg-yellow-200">
     <div class="container mx-auto flex justify-center">
         <div>
             <p class="-top-0 p-3 font-bold text=center text-5xl text-green-700">
@@ -62,6 +58,12 @@
 
     </div>
 </div>
+            </td></tr>
+        </table>
+    </div>
+</div>
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
