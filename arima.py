@@ -42,20 +42,20 @@ def model_from_coef(cp, h, conn, c):
     return predict
 
 
-def Main():
+def arima(lot_number, hours_generated):
     # initialise connection to database
     conn = sqlite3.connect("Data.db")
     c = conn.cursor()
-    name = 'HE12'  # this is what the car park number called should be set as
-    fc_len = 12  # Amount of hours ahead forecasted
+    name = lot_number  # this is what the car park number called should be set as
+    fc_len = hours_generated  # Amount of hours ahead forecasted
     # check model exists
     check = coef_exists(name, conn, c)  # (returns a weird list tuple format)
-    if check[0][0] ==1:
+    if len(check) >0:
         forecast = model_from_coef(name, fc_len, conn, c)
         print(forecast)
     else:
+        forecast = []
         print("model does not yet exist")
 
-
-if __name__ == '__main__':
-    Main()
+    hours_generated = numbers_list = list(range(0, fc_len))
+    return forecast, hours_generated

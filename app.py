@@ -12,6 +12,7 @@ import pandas as pd
 import numpy as np
 import SVY21 as SV
 from parseCSV import parseCSV
+from arima import arima
 
 app = Flask(__name__)
 
@@ -119,8 +120,12 @@ def chartpage():
 
     # show chart based on the user's button click
     lot_number = request.args.get('my_var', None)
-    result = list(parseCSV(lot_number))
+    result = list(parseCSV(lot_number,48))
+    prediction = arima(lot_number,12)
+    result[0]= result[0]+prediction[0]
+    result[1] = result[1]+prediction[1]
     print(result)
+
 
     # find latitude longitude to send to embedded map
     cp_i = cf[cf['car_park_no'] == lot_number].index.values
@@ -168,7 +173,7 @@ def search_place():
         shortest_i = dists.idxmin()
         shortest[idx] = cf['car_park_no'][shortest_i]
         dists[shortest_i] += 1
-        chart_data.append(list(parseCSV(shortest[idx])))
+        chart_data.append(list(parseCSV(shortest[idx],48)))
 
     map_src = api_key + "&q=" + search_term
 

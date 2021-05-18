@@ -2,7 +2,7 @@ import csv
 from datetime import datetime
 
 
-def parseCSV(lot_number):
+def parseCSV(lot_number,periods):
     cp = []
     parking_available = []
     numbers_list = []
@@ -26,9 +26,13 @@ def parseCSV(lot_number):
     for carpark in all_carpark:
         if carpark[0] == lot_number:
             for available in carpark[2]:
-                parking_available.append(int(available))
+                if len(parking_available)<periods:
 
-            numbers_list = list(range(0, len(carpark[2])))
+                    parking_available.append(int(available))
+                else:
+                    break
+
+            numbers_list = list(range(0, len(parking_available)))
             numbers_list.reverse()
 
             # time conversion
