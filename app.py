@@ -12,7 +12,8 @@ import pandas as pd
 import numpy as np
 import SVY21 as SV
 from parseCSV import parseCSV
-from arima import arima
+from arima import arima, car_search_his
+
 
 app = Flask(__name__)
 
@@ -176,7 +177,7 @@ def search_place():
         shortest_i = dists.idxmin()
         shortest[idx] = cf['car_park_no'][shortest_i]
         dists[shortest_i] += 1
-        chart_data.append(list(parseCSV(shortest[idx],48)))
+        chart_data.append(list(car_search_his(shortest[idx],48)))
 
     map_src = api_key + "&q=" + search_term
 

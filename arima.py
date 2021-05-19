@@ -10,6 +10,19 @@ def car_search(name,conn,c):
     return g
 
 
+def car_search_his(name,past):
+    # returns list of available car parks for a given car park number
+    conn = sqlite3.connect("Data.db")
+    c = conn.cursor()
+    c.execute("SELECT lots_available FROM cars WHERE carpark_number = (?) ORDER BY datetime(datestamp) ASC ",(name,))
+    g=c.fetchall()
+    short = list(g[-past:])
+    historic_data = [i[0] for i in short]
+    hours_generated = list(range(0, past))
+    hours_generated.reverse()
+    return historic_data, hours_generated
+
+
 def model_search(name, conn, c):
     # returns coefficients of the Sarima model given a car park name
     c.execute("SELECT coefficients FROM model_coefficients WHERE carpark_number = (?)",(name,))
