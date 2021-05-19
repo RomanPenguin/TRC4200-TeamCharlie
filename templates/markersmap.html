@@ -1,0 +1,60 @@
+<!-- templates/markersmap.html -->
+{% extends 'base.html' %}
+{% block content %}
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<style>
+  html,
+  body {
+    height: 96.2%;
+    margin: 0;
+    padding: 0;
+  }
+</style>
+
+<script>
+  let map;
+  function initMap() {
+      <!-- center map on place -->
+    map = new google.maps.Map(document.getElementById("map"), {
+      center: { lat: {{place_marker[0][0]}}, lng: {{place_marker[0][1]}} },
+      zoom: 17,
+    });
+    new google.maps.Marker({
+        position: { lat: {{place_marker[0][0]}}, lng: {{place_marker[0][1]}} },
+        map,
+        icon: {
+          url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png"
+        }
+      });
+    <!-- carpark pins -->
+    new google.maps.Marker({
+        position: { lat: {{markers[0][0]}}, lng: {{markers[0][1]}} },
+        map,
+        icon: {
+          url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        }
+      });
+    new google.maps.Marker({
+        position: { lat: {{markers[1][0]}}, lng: {{markers[1][1]}} },
+        map,
+        icon: {
+          url: "https://maps.google.com/mapfiles/ms/icons/purple-dot.png"
+        }
+      });
+    new google.maps.Marker({
+        position: { lat: {{markers[2][0]}}, lng: {{markers[2][1]}} },
+        map,
+        icon: {
+          url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
+        }
+      });
+  }
+</script>
+
+<div id="map" style="height:100%"></div>
+<script async
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAVFNUv4-jYTX2EAPig8N3e5ukhOcziSs&callback=initMap"
+></script>
+
+{% endblock content %}

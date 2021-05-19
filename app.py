@@ -50,6 +50,10 @@ for i, r in cf.iterrows():
 # convert to panda dataframe
 cps_coords = pd.DataFrame(lat_lon, columns=['y', 'x'])
 
+
+place_marker = np.empty((1, 2), float)
+markers = np.empty((3, 2), float)
+
 #######################################################
 
 @app.route("/")
@@ -170,7 +174,8 @@ def search_place():
     dists = diff['y'].add(diff['x'])
     dists = dists.pow(0.5)
 
-    # find 3 carparks with shortest distances
+    # find 3 carparks with shortest distances + their coordinates
+    global markers
     shortest = [None] * 3
     chart_data = []
     for idx in range(len(shortest)):
@@ -179,9 +184,25 @@ def search_place():
         dists[shortest_i] += 1
         chart_data.append(list(car_search_his(shortest[idx],48)))
 
+        # get coords for map markers
+        lat = cps_coords['y'].values[shortest_i]
+        lon = cps_coords['x'].values[shortest_i]
+        markers[idx, :] = [str(lat)[1:-1], str(lon)[1:-1]]
+
     map_src = api_key + "&q=" + search_term
 
+    # get place markers
+    global place_marker
+    place_marker[0, :] = place_np[0, :]
+
     return render_template("place.html", place=place, shortest=shortest, chart_data=chart_data, map_src=map_src)
+
+
+@app.route("/full_map", methods=["GET"])
+def full_map():
+    global markers
+    global place_marker
+    return render_template("markersmap.html", markers=markers, place_marker=place_marker)
 
 
 @app.route("/contact")
