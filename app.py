@@ -58,7 +58,7 @@ markers = np.empty((3, 2), float)
 
 @app.route("/")
 def homepage():
-    return render_template("map.html")
+    return render_template("map.html", api_key=api_key)
 
 
 
@@ -195,7 +195,8 @@ def search_place():
     global place_marker
     place_marker[0, :] = place_np[0, :]
 
-    return render_template("place.html", place=place, shortest=shortest, chart_data=chart_data, map_src=map_src)
+    return render_template("place.html", place=place, shortest=shortest, chart_data=chart_data, map_src=map_src,
+                           markers=markers, place_marker=place_marker)
 
 
 @app.route("/full_map", methods=["GET"])

@@ -25,19 +25,7 @@
         </td>
     </tr>
     <tr>
-        <td colspan="1">
-            <div id="table_map" class="mx-auto" >
-                <iframe
-                  width=100%
-                  height="370"
-                  style="border:0"
-                  loading="lazy"
-                  allowfullscreen
-                  src="https://www.google.com/maps/embed/v1/place?key={{map_src}}">
-                </iframe>
-            </div>
-        </td>
-        <td colspan="4">
+        <td colspan="5">
             <!-- chart -->
             <div class="container mx-auto bg-yellow-100 rounded-lg shadow-xl hover:bg-yellow-200" >
                 <div class="container mx-auto flex justify-center">
@@ -134,6 +122,63 @@
     </tr>
 
 
+    <script>
+        if (initialized === 1) {
+            clearMarkers();
+        }
 
+        function updateMapPosition() {
+            <!-- center map on place -->
+            newLatlng = new google.maps.LatLng({{ place_marker[0][0] }}, {{ place_marker[0][1] }} );
+            map.setCenter(newLatlng);
+
+            all_markers[0] = new google.maps.Marker({
+                position: { lat: {{ place_marker[0][0] }}, lng: {{ place_marker[0][1] }} },
+                map,
+                icon: {
+                  url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png"
+                }
+              });
+            <!-- carpark pins -->
+            all_markers[1] = new google.maps.Marker({
+                position: { lat: {{ markers[0][0] }}, lng: {{ markers[0][1] }} },
+                map,
+                icon: {
+                  url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                }
+              });
+            all_markers[2] = new google.maps.Marker({
+                position: { lat: {{ markers[1][0] }}, lng: {{ markers[1][1] }} },
+                map,
+                icon: {
+                  url: "https://maps.google.com/mapfiles/ms/icons/purple-dot.png"
+                }
+              });
+            all_markers[3] = new google.maps.Marker({
+                position: { lat: {{ markers[2][0] }}, lng: {{ markers[2][1] }} },
+                map,
+                icon: {
+                  url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
+                }
+              });
+
+            <!-- zoom map to show all pins -->
+            let latlng = [
+            new google.maps.LatLng({{ place_marker[0][0] }}, {{ place_marker[0][1] }}),
+            new google.maps.LatLng({{ markers[0][0] }}, {{ markers[0][1] }}),
+            new google.maps.LatLng({{ markers[1][0] }}, {{ markers[1][1] }}),
+            new google.maps.LatLng({{ markers[2][0] }}, {{ markers[2][1] }}),
+            ];
+            let latlngbounds = new google.maps.LatLngBounds();
+            for (let i = 0; i < latlng.length; i++) {
+                latlngbounds.extend(latlng[i]);
+            }
+            map.fitBounds(latlngbounds);
+
+            initialized = 1;
+        }
+
+        updateMapPosition();
+    </script>
 
 {% endif %}

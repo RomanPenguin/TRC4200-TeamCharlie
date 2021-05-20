@@ -16,6 +16,46 @@
     <span class="htmx-indicator">Searching...</span>
 </div>
 
+
+<div class="mx-auto w-2/3 h-1/2">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <style>
+      html, body {
+        height: 96.2%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+
+    <script>
+        let map;
+        function initMap() {
+            <!-- center map on singapore -->
+            map = new google.maps.Map(document.getElementById("map"), {
+              center: { lat: 1.290270, lng: 103.851959 },
+              zoom: 10,
+            });
+        }
+
+        let all_markers = new Array(4);
+        let initialized = 0;
+
+        function clearMarkers() {
+            for (let i = 0; i < all_markers.length; i++) {
+                all_markers[i].setMap(null);
+            }
+        }
+    </script>
+
+    <div id="map" style="height:100%; width:100%;"></div>
+    <script async
+      src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&callback=initMap"
+    ></script>
+
+</div>
+
+
 <table class="border-collapse w-small w-2/3 mx-auto">
   <thead>
     <tr>
