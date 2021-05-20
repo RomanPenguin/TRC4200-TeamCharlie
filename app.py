@@ -189,21 +189,12 @@ def search_place():
         lon = cps_coords['x'].values[shortest_i]
         markers[idx, :] = [lat, lon]
 
-    map_src = api_key + "&q=" + search_term
-
     # get place markers
     global place_marker
     place_marker[0, :] = place_np[0, :]
 
-    return render_template("place.html", place=place, shortest=shortest, chart_data=chart_data, map_src=map_src,
-                           markers=markers, place_marker=place_marker)
-
-
-@app.route("/full_map", methods=["GET"])
-def full_map():
-    global markers
-    global place_marker
-    return render_template("markersmap.html", markers=markers, place_marker=place_marker)
+    return render_template("place.html", place=place, shortest=shortest, chart_data=chart_data, markers=markers,
+                           place_marker=place_marker)
 
 
 @app.route("/contact")
