@@ -48,7 +48,7 @@
 
 
                     const data = {
-                        labels: {{ chart_data[0][1] }},
+                        labels: {{ chart_data[0][1]|safe }},
                         datasets: [{
                             label: '{{shortest[0]}}',
                             backgroundColor: 'rgb(58,129,245)',

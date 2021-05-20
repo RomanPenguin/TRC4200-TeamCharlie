@@ -186,7 +186,9 @@ def search_place():
         shortest_i = dists.idxmin()
         shortest[idx] = cf['car_park_no'][shortest_i]
         dists[shortest_i] += 1
-        chart_data.append(list(car_search_his(shortest[idx],48)))
+        hist_data = list(car_search_his(shortest[idx], 48))
+        hist_data[1] = [str(s) + " hrs ago" for s in hist_data[1]]
+        chart_data.append(hist_data)
 
         # get coords for map markers
         lat = cps_coords['y'].values[shortest_i]
