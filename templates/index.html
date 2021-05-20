@@ -16,8 +16,8 @@
     >
   <span class="htmx-indicator">Searching...</span>
 </div>
-
-<table class="border-collapse w-small w-2/3 mx-auto">
+<div class="container pb-10">
+    <table class="border-collapse w-small w-2/3 mx-auto pb-10">
   <thead>
     <tr>
       <th class="p-3 font-bold uppercase bg-green-400 text-gray-600 border border-gray-300 hidden lg:table-cell">#</th>
@@ -29,8 +29,12 @@
   </thead>
   <tbody id="todo-results">
     {% include 'todo.html' %}
-  
+
   </tbody>
 
 </table>
+
+</div>
+
+
 {% endblock content %}

@@ -93,7 +93,7 @@
     <script>
 
         const data = {
-            labels: {{ numbers_list }},
+            labels: {{ numbers_list|safe }},
             datasets: [{
                 label: '{{lot_number}}',
                 backgroundColor: 'rgb(4, 120, 87)',

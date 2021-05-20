@@ -126,7 +126,11 @@ def chartpage():
     # show chart based on the user's button click
     lot_number = request.args.get('my_var', None)
     result = list(car_search_his(lot_number,48))
-    prediction = arima(lot_number,12)
+    result[1] = [str(s) + " hrs ago" for s in result[1]]
+    print(result)
+    prediction = list(arima(lot_number,12))
+    prediction[1] = [str(s) + " hrs from now" for s in prediction[1]]
+
     result[0]= result[0]+prediction[0]
     result[1] = result[1]+prediction[1]
     print(result)
