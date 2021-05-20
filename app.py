@@ -187,7 +187,7 @@ def search_place():
         # get coords for map markers
         lat = cps_coords['y'].values[shortest_i]
         lon = cps_coords['x'].values[shortest_i]
-        markers[idx, :] = [str(lat)[1:-1], str(lon)[1:-1]]
+        markers[idx, :] = [lat, lon]
 
     map_src = api_key + "&q=" + search_term
 

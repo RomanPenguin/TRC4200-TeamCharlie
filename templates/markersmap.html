@@ -49,7 +49,20 @@
           url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
         }
       });
-  }
+
+    <!-- zoom map to show all pins -->
+    let latlng = [
+    new google.maps.LatLng({{place_marker[0][0]}}, {{place_marker[0][1]}}),
+    new google.maps.LatLng({{markers[0][0]}}, {{markers[0][1]}}),
+    new google.maps.LatLng({{markers[1][0]}}, {{markers[1][1]}}),
+    new google.maps.LatLng({{markers[2][0]}}, {{markers[2][1]}}),
+    ];
+    let latlngbounds = new google.maps.LatLngBounds();
+    for (let i = 0; i < latlng.length; i++) {
+        latlngbounds.extend(latlng[i]);
+    }
+    map.fitBounds(latlngbounds);
+      }
 </script>
 
 <div id="map" style="height:100%"></div>
