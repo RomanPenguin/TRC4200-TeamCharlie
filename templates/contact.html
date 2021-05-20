@@ -1,23 +1,10 @@
 <!-- templates/chart.html -->
 {% extends 'base.html' %}
 {% block content %}
-    <div class="container mx-auto px-10 pt-10 pb-5 ">
-        <button onclick="goBack()"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
-            <script>
-                function goBack() {
-                    window.history.back();
-                }
-            </script>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                 stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-            </svg>
-        </button>
 
-    </div>
-
-<table class="border-collapse w-small w-2/3 mx-auto table-auto">
+<div class="pt-10"></div>
+    <div class="container mx-auto pt-10">
+<table class=" w-2/3 mx-auto">
   <thead>
     <tr>
         <th class="p-3 font-bold uppercase bg-green-400 text-gray-100 border border-gray-300 hidden lg:table-cell">Profile</th>
@@ -43,8 +30,28 @@
         <td class="text-center">Mehrnaz Mirmoayedi</td>
         <td class="text-center">smmir2@student.monash.edu</td>
     </tr>
+  <tr>
+      <td colspan="3">
+
+      </td>
+  </tr>
   </tbody>
 
 </table>
+    </div>
+    <div class="container mx-auto px-10 pt-10 pb-5 bg-green-200 w-2/3">
+        <button onclick="goBack()"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
+            <script>
+                function goBack() {
+                    window.history.back();
+                }
+            </script>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+        </button>
 
+    </div>
 {% endblock content %}

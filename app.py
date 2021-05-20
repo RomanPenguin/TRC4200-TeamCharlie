@@ -125,7 +125,7 @@ def chartpage():
 
     # show chart based on the user's button click
     lot_number = request.args.get('my_var', None)
-    result = list(parseCSV(lot_number,48))
+    result = list(car_search_his(lot_number,48))
     prediction = arima(lot_number,12)
     result[0]= result[0]+prediction[0]
     result[1] = result[1]+prediction[1]

@@ -18,7 +18,7 @@ def car_search_his(name,past):
     g=c.fetchall()
     short = list(g[-past:])
     historic_data = [i[0] for i in short]
-    hours_generated = list(range(0, past))
+    hours_generated = list(range(1, past+1))
     hours_generated.reverse()
     return historic_data, hours_generated
 
